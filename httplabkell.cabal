@@ -1,0 +1,107 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 3279a1579fae4fec90956f74a890a927389303bdb3ca2162796e1ee4a76d6782
+
+name:           httplabkell
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/httplabkell#readme>
+homepage:       https://github.com/githubuser/httplabkell#readme
+bug-reports:    https://github.com/githubuser/httplabkell/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/httplabkell
+
+library
+  exposed-modules:
+      App
+      Lib
+      Types
+      UI
+  other-modules:
+      Paths_httplabkell
+  hs-source-dirs:
+      src
+  default-extensions: StrictData NoImplicitPrelude OverloadedStrings
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , brick
+    , bytestring
+    , case-insensitive
+    , http-conduit
+    , http-types
+    , optparse-applicative
+    , resourcet
+    , rio
+    , text-zipper
+    , vty
+    , wai
+    , warp
+  default-language: Haskell2010
+
+executable httplabkell-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_httplabkell
+  hs-source-dirs:
+      app
+  default-extensions: StrictData NoImplicitPrelude OverloadedStrings
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , brick
+    , bytestring
+    , case-insensitive
+    , http-conduit
+    , http-types
+    , httplabkell
+    , optparse-applicative
+    , resourcet
+    , rio
+    , text-zipper
+    , vty
+    , wai
+    , warp
+  default-language: Haskell2010
+
+test-suite httplabkell-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_httplabkell
+  hs-source-dirs:
+      test
+  default-extensions: StrictData NoImplicitPrelude OverloadedStrings
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , brick
+    , bytestring
+    , case-insensitive
+    , http-conduit
+    , http-types
+    , httplabkell
+    , optparse-applicative
+    , resourcet
+    , rio
+    , text-zipper
+    , vty
+    , wai
+    , warp
+  default-language: Haskell2010
