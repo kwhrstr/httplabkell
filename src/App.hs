@@ -34,6 +34,9 @@ respHandler hasTvar bchan req send = do
   <* writeBChan bchan (toRequested req)
   where
     toResHeader a b = (CI.mk $ T.encodeUtf8 $ CI.foldedCase a, T.encodeUtf8 b)
+
+middleware :: Middleware
+middleware = id 
   
 runApp :: IO ()
 runApp = do
@@ -43,7 +46,7 @@ runApp = do
   chan <- newBChan 5
   vty <- buildVty
   let state = initBrickState cmd tvar
-  withAsync (WAI.run (argPort cmd) $ respHandler state chan)
+  withAsync (WAI.run (argPort cmd) $ middleware $ respHandler state chan)
             $ const $ void $ customMain vty buildVty (Just chan) app state
   where
    opts = info (parseCmdArgs <**> helper) fullDesc
