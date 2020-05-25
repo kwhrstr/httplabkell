@@ -134,19 +134,19 @@ data Requested = Requested
   , _reqMinor :: Int
   , _reqHeaders :: [HeaderTxt]
   }
-reqMethod :: Lens' Requested Text
+reqMethod :: SimpleGetter Requested Text
 reqMethod = lens _reqMethod $ \s t -> s { _reqMethod = t }
 
-reqPathInfo :: Lens' Requested Text
+reqPathInfo :: SimpleGetter Requested Text
 reqPathInfo = lens _reqPathInfo $ \s t -> s { _reqPathInfo = t }
 
-reqMajor :: Lens' Requested Int
+reqMajor :: SimpleGetter Requested Int
 reqMajor = lens _reqMajor $ \s t -> s { _reqMajor = t }
 
-reqMinor :: Lens' Requested Int
+reqMinor :: SimpleGetter Requested Int
 reqMinor = lens _reqMinor $ \s t -> s { _reqMinor = t }
 
-reqHeaders :: Lens' Requested [HeaderTxt]
+reqHeaders :: SimpleGetter Requested [HeaderTxt]
 reqHeaders = lens _reqHeaders $ \s t -> s { _reqHeaders = t }
 
 toRequested :: Request -> Requested
