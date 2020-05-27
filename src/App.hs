@@ -14,6 +14,7 @@ import qualified RIO.Text as T
 import qualified RIO.Text.Partial as T (breakOn)
 import qualified Data.CaseInsensitive as CI 
 import qualified Network.Wai.Handler.Warp as WAI
+import qualified Network.Wai.Handler.WarpTLS as WAI 
 import Network.Wai
 import qualified RIO.ByteString as B
 import qualified Data.ByteString.Builder as B
@@ -46,7 +47,7 @@ runApp = do
   chan <- newBChan 5
   vty <- buildVty
   let state = initBrickState cmd tvar
-  withAsync (WAI.run (argPort cmd) $ middleware $ respHandler state chan)
+  withAsync (run cmd $ middleware $ respHandler state chan)
             $ const $ void $ customMain vty buildVty (Just chan) app state
   where
    opts = info (parseCmdArgs <**> helper) fullDesc
@@ -54,6 +55,9 @@ runApp = do
      v <- V.mkVty =<< V.standardIOConfig
      V.setMode (V.outputIface v) V.Mouse True
      pure v
+   run cmd  = if argTLSEnabled cmd 
+            then WAI.runTLS WAI.defaultTlsSettings $ WAI.setPort (argPort cmd) WAI.defaultSettings
+            else WAI.run $ argPort cmd 
 
 
 parseAutoUpdate :: Parser Bool
@@ -83,6 +87,12 @@ parseCorsEnabled = switch
   $ long "cors"
  <> help "Enable CORS."
   
+parseTLSEnabled :: Parser Bool
+parseTLSEnabled = switch
+  $ long "tls"
+ <> short 't'
+ <> help "Enable TLS Server"
+
 parseCorsDisplay :: Parser Bool
 parseCorsDisplay = flag True False
   $ long "cors-display"
@@ -137,5 +147,6 @@ parseCmdArgs = CmdArgs <$> parseAutoUpdate
                        <*> parseHeaders
                        <*> parsePort
                        <*> parseStatus
+                       <*> parseTLSEnabled
                        
                        

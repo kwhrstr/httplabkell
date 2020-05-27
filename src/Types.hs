@@ -27,6 +27,7 @@ data CmdArgs = CmdArgs
   , argHeaders :: HeaderTxts
   , argPort :: Int
   , argStatus :: Status
+  , argTLSEnabled :: Bool
   }
 
 data ResponseData = ResponseData

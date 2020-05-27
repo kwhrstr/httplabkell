@@ -76,7 +76,7 @@ drawUI st = [B.hLimitPercent 60 requestedWidget <+> responseWidget <=> infoTxt]
                    then id
                    else B.forceAttr invalidBodyAttr
  
- 
+
 -- | Main even handler for brick events
 --
 handleEvent ::  BrickState -> BrickEvent Name Requested -> EventM Name (Next BrickState)

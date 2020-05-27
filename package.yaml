@@ -39,6 +39,7 @@ dependencies:
 - brick
 - vty
 - text-zipper
+- warp-tls
 
 library:
   source-dirs: src
