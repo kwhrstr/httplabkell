@@ -47,8 +47,8 @@ runApp = do
   chan <- newBChan 5
   vty <- buildVty
   let state = initBrickState cmd tvar
-  withAsync (run cmd $ middleware $ respHandler state chan)
-            $ const $ void $ customMain vty buildVty (Just chan) app state
+  race_ (run cmd $ middleware $ respHandler state chan)
+         $ customMain vty buildVty (Just chan) app state
   where
    opts = info (parseCmdArgs <**> helper) fullDesc
    buildVty = do
