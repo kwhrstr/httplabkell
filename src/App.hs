@@ -22,7 +22,7 @@ import qualified Graphics.Vty as V
 import Types
 import Brick (customMain)
 import UI
-
+import Network.Wai.Middleware.Cors
 
 respHandler :: HasResponseData d => d -> BChan Requested -> Application
 respHandler hasTvar bchan req send = do
@@ -36,8 +36,9 @@ respHandler hasTvar bchan req send = do
   where
     toResHeader a b = (CI.mk $ T.encodeUtf8 $ CI.foldedCase a, T.encodeUtf8 b)
 
-middleware :: Middleware
-middleware = id 
+middleware :: Bool -> Middleware
+middleware True = simpleCors
+middleware _ = id 
   
 runApp :: IO ()
 runApp = do
@@ -47,7 +48,7 @@ runApp = do
   chan <- newBChan 5
   vty <- buildVty
   let state = initBrickState cmd tvar
-  race_ (run cmd $ middleware $ respHandler state chan)
+  race_ (run cmd $ middleware (argCorsEnabled cmd) $ respHandler state chan)
          $ customMain vty buildVty (Just chan) app state
   where
    opts = info (parseCmdArgs <**> helper) fullDesc
