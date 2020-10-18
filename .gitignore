@@ -1,5 +1,9 @@
 .stack-work/
 .idea/
+*~
 httplabkell.iml
 httplabkell.cabal
-*~
+.DS_Store
+certificate.csr
+certificate.pem
+key.pem
