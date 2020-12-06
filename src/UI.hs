@@ -7,10 +7,9 @@ module UI where
 import RIO
 import RIO.Partial (toEnum)
 import RIO.Char
-import RIO.List
 import qualified Data.Aeson as Aeson
 import Data.Aeson (Value)
-import Brick (App(..) ,Widget, AttrMap, AttrName, (<+>), (<=>))
+import Brick (App(..), AttrMap, AttrName, (<+>), (<=>))
 import Brick.Types
 import qualified Brick as B
 import qualified Brick.Widgets.Edit as BE
@@ -25,8 +24,6 @@ import Types
 import qualified RIO.Text as T
 import qualified RIO.Text.Partial as T (breakOn)
 import qualified RIO.Map as M
-import Network.Wai
-import Network.HTTP.Types
 import qualified Data.CaseInsensitive as CI
 
 
@@ -63,8 +60,8 @@ drawUI st = [B.hLimitPercent 60 requestedWidget <+> responseWidget <=> infoTxt]
                     $ B.viewport NameRequest B.Both $ requestedRender $ st ^. bsRequested
     reqLabelTxt reqz = case reqzLength reqz of
       0 -> "request"
-      n -> "request (" <> T.pack ( show $ reqzCurPos  reqz)
-       <> "/" <> T.pack ( show $ reqzLength  reqz) <> ")"
+      _ -> "request (" <> textDisplay (reqzCurPos reqz)
+       <> "/" <> textDisplay (reqzLength  reqz) <> ")"
     savedHeader = st ^. bsRawHeader == BE.getEditContents (st ^. bsEditorHeaders)
     editingInfo = if savedHeader
                 then ""
@@ -100,7 +97,7 @@ handleEvent st ev = case ev of
       (V.KChar 'a', [V.MCtrl]) -> do --  save Header
         let rawHeaders = BE.getEditContents $ st ^. bsEditorHeaders
             withFast f (a, b) = (f a, b)
-            headerTxts = M.filterWithKey (\k a -> not (T.null $ CI.original k) && not (T.null a))
+            headerTxts = M.filterWithKey (\key a -> not (T.null $ CI.original key) && not (T.null a))
                                         $ M.fromList $ map (withFast CI.mk . fmap (T.strip . T.dropPrefix ":") . T.breakOn ":" ) rawHeaders
             lookupContentType = M.lookup "Content-Type"  headerTxts
             jsonMode = lookupContentType == Just "application/json"

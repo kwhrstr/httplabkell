@@ -4,7 +4,6 @@
 module App where
 
 import RIO
-import RIO.Char
 import Brick.BChan
 import Options.Applicative
 import Network.HTTP.Types
@@ -16,7 +15,6 @@ import qualified Data.CaseInsensitive as CI
 import qualified Network.Wai.Handler.Warp as WAI
 import qualified Network.Wai.Handler.WarpTLS as WAI 
 import Network.Wai
-import qualified RIO.ByteString as B
 import qualified Data.ByteString.Builder as B
 import qualified Graphics.Vty as V
 import Types
